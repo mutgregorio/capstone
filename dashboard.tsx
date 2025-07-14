@@ -20,8 +20,20 @@ import { useAuth } from "./lib/auth-context"
 import { Bell, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { UserProfile } from "./components/user-profile"
+import { AccountSettings } from "./components/account-settings"
+import { NotificationCenter } from "./components/notification-center"
 
-export type ViewType = "dashboard" | "payment" | "history" | "wallet" | "school-fees" | "allowance"
+export type ViewType =
+  | "dashboard"
+  | "payment"
+  | "history"
+  | "wallet"
+  | "school-fees"
+  | "tuition" // Added tuition
+  | "profile"
+  | "settings"
+  | "notifications"
 
 export default function Dashboard() {
   const [currentView, setCurrentView] = useState<ViewType>("dashboard")
@@ -39,8 +51,14 @@ export default function Dashboard() {
         return "My Wallet"
       case "school-fees":
         return "School Fees"
-      case "allowance":
-        return "Request Allowance"
+      case "tuition": // Added tuition title
+        return "Tuition Payment"
+      case "profile":
+        return "Profile"
+      case "settings":
+        return "Account Settings"
+      case "notifications":
+        return "Notifications"
       default:
         return "Dashboard"
     }
@@ -52,6 +70,7 @@ export default function Dashboard() {
         return <DashboardContent onNavigate={setCurrentView} balance={user?.balance || 0} />
       case "payment":
       case "school-fees":
+      case "tuition": // Added tuition to payment form rendering
         return (
           <PaymentForm type={currentView} onBack={() => setCurrentView("dashboard")} balance={user?.balance || 0} />
         )
@@ -59,8 +78,12 @@ export default function Dashboard() {
         return <TransactionHistory onBack={() => setCurrentView("dashboard")} />
       case "wallet":
         return <WalletManagement onBack={() => setCurrentView("dashboard")} balance={user?.balance || 0} />
-      case "allowance":
-        return <PaymentForm type="allowance" onBack={() => setCurrentView("dashboard")} balance={user?.balance || 0} />
+      case "profile":
+        return <UserProfile onBack={() => setCurrentView("dashboard")} user={user!} />
+      case "settings":
+        return <AccountSettings onBack={() => setCurrentView("dashboard")} user={user!} />
+      case "notifications":
+        return <NotificationCenter onBack={() => setCurrentView("dashboard")} />
       default:
         return <DashboardContent onNavigate={setCurrentView} balance={user?.balance || 0} />
     }

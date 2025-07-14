@@ -14,6 +14,15 @@ interface TransactionHistoryProps {
 
 const transactions = [
   {
+    id: "TXN007",
+    type: "payment",
+    description: "Tuition Fee - Semester 1",
+    amount: -15000,
+    date: "2024-01-20",
+    status: "completed",
+    category: "tuition", // New category
+  },
+  {
     id: "TXN001",
     type: "payment",
     description: "Registration Fee - Semester 1",
@@ -34,11 +43,11 @@ const transactions = [
   {
     id: "TXN003",
     type: "credit",
-    description: "Allowance Received",
+    description: "Cash In from Bank",
     amount: 3000,
     date: "2024-01-10",
     status: "completed",
-    category: "allowance",
+    category: "cash-in",
   },
   {
     id: "TXN004",
@@ -131,7 +140,7 @@ export function TransactionHistory({ onBack }: TransactionHistoryProps) {
                 <SelectContent>
                   <SelectItem value="all">All Transactions</SelectItem>
                   <SelectItem value="fees">School Fees</SelectItem>
-                  <SelectItem value="allowance">Allowance</SelectItem>
+                  <SelectItem value="tuition">Tuition</SelectItem> {/* New filter item */}
                   <SelectItem value="cash-in">Cash In</SelectItem>
                 </SelectContent>
               </Select>

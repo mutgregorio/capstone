@@ -13,6 +13,7 @@ import {
   ArrowDownRight,
   Plus,
   Send,
+  Banknote,
 } from "lucide-react"
 import type { ViewType } from "../dashboard"
 
@@ -187,18 +188,19 @@ export function DashboardContent({ onNavigate, balance }: DashboardContentProps)
               </div>
             </Button>
 
+            {/* New button for Tuition Payment */}
             <Button
-              className="w-full justify-start h-auto p-4 bg-gradient-to-r from-orange-50 to-amber-50 hover:from-orange-100 hover:to-amber-100 dark:from-orange-900/20 dark:to-amber-900/20 dark:hover:from-orange-900/30 dark:hover:to-amber-900/30 border border-orange-200 dark:border-orange-800 text-left"
+              className="w-full justify-start h-auto p-4 bg-gradient-to-r from-purple-50 to-fuchsia-50 hover:from-purple-100 hover:to-fuchsia-100 dark:from-purple-900/20 dark:to-fuchsia-900/20 dark:hover:from-purple-900/30 dark:hover:to-fuchsia-900/30 border border-purple-200 dark:border-purple-800 text-left"
               variant="outline"
-              onClick={() => onNavigate("allowance")}
+              onClick={() => onNavigate("tuition")}
             >
               <div className="flex items-center gap-4 w-full">
-                <div className="p-3 bg-orange-100 dark:bg-orange-900/40 rounded-xl">
-                  <DollarSign className="h-6 w-6 text-orange-600" />
+                <div className="p-3 bg-purple-100 dark:bg-purple-900/40 rounded-xl">
+                  <Banknote className="h-6 w-6 text-purple-600" />
                 </div>
                 <div className="flex-1 text-left">
-                  <div className="font-semibold text-gray-900 dark:text-white">Request Allowance</div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">From parents or guardians</div>
+                  <div className="font-semibold text-gray-900 dark:text-white">Tuition Payment</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-400">Pay your semester tuition fees</div>
                 </div>
                 <ArrowUpRight className="h-5 w-5 text-gray-400" />
               </div>
@@ -227,9 +229,10 @@ export function DashboardContent({ onNavigate, balance }: DashboardContentProps)
           <CardContent>
             <div className="space-y-4">
               {[
-                { type: "expense", desc: "Tuition Payment - Semester 1", amount: -8500, date: "Jan 15", color: "red" },
+                { type: "expense", desc: "Tuition Payment - Semester 1", amount: -15000, date: "Jan 20", color: "red" }, // Added tuition transaction
+                { type: "expense", desc: "Registration Fee - Semester 1", amount: -2500, date: "Jan 15", color: "red" },
                 { type: "expense", desc: "Library Fee", amount: -500, date: "Jan 12", color: "red" },
-                { type: "income", desc: "Allowance Received", amount: 3000, date: "Jan 10", color: "green" },
+                { type: "income", desc: "Cash In from Bank", amount: 3000, date: "Jan 10", color: "green" },
                 { type: "expense", desc: "Lab Fee - Chemistry", amount: -750, date: "Jan 8", color: "red" },
               ].map((transaction, index) => (
                 <div
@@ -274,6 +277,7 @@ export function DashboardContent({ onNavigate, balance }: DashboardContentProps)
         <CardContent>
           <div className="grid gap-6 md:grid-cols-3">
             {[
+              { name: "Tuition Fees", progress: 25, color: "bg-purple-500" }, // Added tuition progress
               { name: "Laboratory Fees", progress: 75, color: "bg-blue-500" },
               { name: "Library Fees", progress: 100, color: "bg-green-500" },
               { name: "Miscellaneous Fees", progress: 50, color: "bg-orange-500" },
@@ -306,6 +310,7 @@ export function DashboardContent({ onNavigate, balance }: DashboardContentProps)
         <CardContent>
           <div className="space-y-4">
             {[
+              { name: "Tuition Fee - Semester 2", amount: 15000, due: "March 1, 2024", days: 45, urgent: true }, // Added upcoming tuition
               { name: "Laboratory Equipment Fee", amount: 2500, due: "February 15, 2024", days: 15, urgent: true },
               { name: "Registration Fee", amount: 1200, due: "February 20, 2024", days: 20, urgent: false },
             ].map((payment, index) => (

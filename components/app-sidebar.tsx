@@ -1,9 +1,9 @@
 "use client"
 
 import type * as React from "react"
-import { CreditCard, DollarSign, History, Home, Receipt, Settings, Wallet, LogOut, Shield, Bell } from "lucide-react"
+import { CreditCard, History, Home, Receipt, Settings, Wallet, LogOut, Shield, Bell, User } from "lucide-react"
 import type { ViewType } from "../dashboard"
-import type { User } from "../lib/auth-context"
+import type { User as AuthUser } from "../lib/auth-context"
 import { useAuth } from "../lib/auth-context"
 
 import {
@@ -33,7 +33,7 @@ interface AppSidebarProps extends React.ComponentProps<typeof Sidebar> {
   currentView: ViewType
   onNavigate: (view: ViewType) => void
   balance: number
-  user: User
+  user: AuthUser
 }
 
 export function AppSidebar({ currentView, onNavigate, balance, user, ...props }: AppSidebarProps) {
@@ -69,9 +69,19 @@ export function AppSidebar({ currentView, onNavigate, balance, user, ...props }:
         icon: Receipt,
       },
       {
-        title: "Allowance",
-        view: "allowance" as ViewType,
-        icon: DollarSign,
+        title: "Profile",
+        view: "profile" as ViewType,
+        icon: User,
+      },
+      {
+        title: "Settings",
+        view: "settings" as ViewType,
+        icon: Settings,
+      },
+      {
+        title: "Notifications",
+        view: "notifications" as ViewType,
+        icon: Bell,
       },
     ],
   }

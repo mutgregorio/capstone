@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft, CreditCard, Receipt, DollarSign } from "lucide-react"
+import { ArrowLeft, CreditCard, Receipt, Banknote } from "lucide-react" // Added Banknote icon
 import { Badge } from "@/components/ui/badge"
 import type { ViewType } from "../dashboard"
 
@@ -31,13 +31,13 @@ export function PaymentForm({ type, onBack, balance }: PaymentFormProps) {
           suggestedAmount: "2500",
           color: "text-green-600",
         }
-      case "allowance":
+      case "tuition": // New case for tuition
         return {
-          title: "Request Allowance",
-          icon: DollarSign,
-          description: "Request allowance from parents",
-          suggestedAmount: "3000",
-          color: "text-orange-600",
+          title: "Tuition Payment",
+          icon: Banknote, // Using Banknote icon for tuition
+          description: "Pay your semester tuition fees",
+          suggestedAmount: "15000",
+          color: "text-purple-600",
         }
       default:
         return {
@@ -79,14 +79,8 @@ export function PaymentForm({ type, onBack, balance }: PaymentFormProps) {
             <div className="w-16 h-16 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Icon className={`h-8 w-8 text-green-600`} />
             </div>
-            <h3 className="text-lg font-semibold text-foreground mb-2">
-              {type === "allowance" ? "Request Sent!" : "Payment Successful!"}
-            </h3>
-            <p className="text-muted-foreground mb-4">
-              {type === "allowance"
-                ? `Allowance request of ₱${amount} has been sent to your parents.`
-                : `Your payment of ₱${amount} has been processed successfully.`}
-            </p>
+            <h3 className="text-lg font-semibold text-foreground mb-2">Payment Successful!</h3>
+            <p className="text-muted-foreground mb-4">Your payment of ₱{amount} has been processed successfully.</p>
             <Badge variant="secondary" className="mb-4">
               Transaction ID: TXN{Date.now().toString().slice(-6)}
             </Badge>
@@ -124,7 +118,7 @@ export function PaymentForm({ type, onBack, balance }: PaymentFormProps) {
             {/* Amount Input */}
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-foreground">
-                {type === "allowance" ? "Request Amount" : "Payment Amount"}
+                Payment Amount
               </Label>
               <div className="relative">
                 <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">₱</span>
@@ -156,36 +150,30 @@ export function PaymentForm({ type, onBack, balance }: PaymentFormProps) {
             </div>
 
             {/* Payment Method */}
-            {type !== "allowance" && (
-              <div className="space-y-2">
-                <Label className="text-foreground">Payment Method</Label>
-                <Select defaultValue="gcash">
-                  <SelectTrigger className="bg-background border-border text-foreground">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="gcash">GCash Wallet</SelectItem>
-                    <SelectItem value="bank">Bank Transfer</SelectItem>
-                    <SelectItem value="card">Credit/Debit Card</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            )}
+            <div className="space-y-2">
+              <Label className="text-foreground">Payment Method</Label>
+              <Select defaultValue="gcash">
+                <SelectTrigger className="bg-background border-border text-foreground">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="gcash">GCash Wallet</SelectItem>
+                  <SelectItem value="bank">Bank Transfer</SelectItem>
+                  <SelectItem value="card">Credit/Debit Card</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
 
             {/* Payment Summary */}
             <div className="border border-border rounded-lg p-3 space-y-2 bg-muted/20">
               <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">
-                  {type === "allowance" ? "Request Amount" : "Payment Amount"}
-                </span>
+                <span className="text-muted-foreground">Payment Amount</span>
                 <span className="text-foreground">₱{amount || "0.00"}</span>
               </div>
-              {type !== "allowance" && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">Processing Fee</span>
-                  <span className="text-foreground">₱0.00</span>
-                </div>
-              )}
+              <div className="flex justify-between text-sm">
+                <span className="text-muted-foreground">Processing Fee</span>
+                <span className="text-foreground">₱0.00</span>
+              </div>
               <div className="border-t border-border pt-2 flex justify-between font-semibold">
                 <span className="text-foreground">Total</span>
                 <span className="text-foreground">₱{amount || "0.00"}</span>
@@ -196,17 +184,14 @@ export function PaymentForm({ type, onBack, balance }: PaymentFormProps) {
             <Button
               onClick={handlePayment}
               disabled={
-                !amount ||
-                Number.parseFloat(amount) <= 0 ||
-                isProcessing ||
-                (type !== "allowance" && balance < Number.parseFloat(amount || "0"))
+                !amount || Number.parseFloat(amount) <= 0 || isProcessing || balance < Number.parseFloat(amount || "0")
               }
               className="w-full"
             >
-              {isProcessing ? "Processing..." : type === "allowance" ? "Send Request" : "Pay Now"}
+              {isProcessing ? "Processing..." : "Pay Now"}
             </Button>
 
-            {type !== "allowance" && balance < Number.parseFloat(amount || "0") && amount && (
+            {balance < Number.parseFloat(amount || "0") && amount && (
               <p className="text-sm text-red-500 text-center">
                 Insufficient balance. Please cash in or reduce the amount.
               </p>
