@@ -29,6 +29,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import type { AdminViewType } from "../admin-portal"
+import StudentRegistrationForm from "./student-registration-form"
 
 interface StudentManagementProps {
   onBack: () => void
@@ -89,6 +90,7 @@ const mockStudents = [
 export function StudentManagement({ onBack, onNavigate }: StudentManagementProps) {
   const [searchTerm, setSearchTerm] = useState("")
   const [statusFilter, setStatusFilter] = useState("all")
+  const [showRegistrationForm, setShowRegistrationForm] = useState(false)
 
   const filteredStudents = mockStudents.filter((student) => {
     const matchesSearch =
@@ -132,17 +134,32 @@ export function StudentManagement({ onBack, onNavigate }: StudentManagementProps
 
   const stats = getStats()
 
+  function handleRegistrationSuccess() {
+    setShowRegistrationForm(false)
+    // TODO: Refresh student list from backend after registration
+  }
+
   return (
     <div className="flex flex-1 flex-col gap-6 p-4 md:p-6 pb-8 bg-gray-50 dark:bg-gray-900">
       <div className="flex items-center gap-4 mb-2">
         <Button variant="ghost" size="sm" onClick={onBack}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
-        <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Student Management</h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-1">Manage student accounts and verification status</p>
+        <div className="flex items-center justify-between w-full">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white">Student Management</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-1">Manage student accounts and verification status</p>
+          </div>
+          <Button onClick={() => setShowRegistrationForm(true)}>Register New Student</Button>
         </div>
       </div>
+
+      {showRegistrationForm && (
+        <StudentRegistrationForm
+          onSuccess={handleRegistrationSuccess}
+          onCancel={() => setShowRegistrationForm(false)}
+        />
+      )}
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
